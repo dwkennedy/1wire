@@ -84,6 +84,8 @@ Hi,
 
 On {}, the fridge was {} deg C and the freezer was {} deg C.
 
+Click http://10.0.0.8:8080/view?scale=day for more information.
+
 """
     """
     thread to aquire samples continuously
