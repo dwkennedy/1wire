@@ -9,18 +9,13 @@ import threading
 import Queue
 import rrdtool
 import cayenne.client
-import paho.mqtt.client as mqtt
-import json
-from secret import * 
 from subprocess import Popen, PIPE
+from secret import *
 
 C_TO_F = (9/5)  # constant used in converting C to F
 
 # Cayenne authentication info. This is obtained from the Cayenne Dashboard.
 # moved to secret.py
-CAYENNE = True
-PAHO = True
-LOCAL_BROKER_ADDRESS='10.0.0.2'
 
 # The callback for when a message is received from Cayenne.
 # message received: {'topic': u'cmd', 'value': u'0', 'msg_id': u'zKsHGw1HIqnKyKM', 'channel': 4, 'client_id': u'2d40b6a0-0faf-11e9-810f-075d38a26cc9'}
@@ -71,7 +66,7 @@ def produceData():
 
     # threshold temp in C
     EMAIL_FRIDGE_THRESH = 7 
-    EMAIL_FREEZER_THRESH = -12
+    EMAIL_FREEZER_THRESH = -10
     # time in seconds that threshold must be exceeded
     EMAIL_THRESHOLD_TIME = 1200
     # min alert email interval in seconds
@@ -130,7 +125,7 @@ Click http://10.0.0.8:8080/view?scale=day for more information.
         try:
             # fridge thermometer has offset
             #fridge_temp = fridge.get_temperature() - 3.333
-            # fridge temp offset changed 12/25/2019
+            # fridge temp offset dhanged 12/25/2019
             fridge_temp = fridge.get_temperature() + 2.000
         except Exception:
             pass
@@ -187,9 +182,6 @@ Click http://10.0.0.8:8080/view?scale=day for more information.
         #file.write(foo)
         #file.flush()
 
-	# update local paho mqtt every time
-	paho.publish('fridge',json.dumps(current))
-
         # update cayenne about every 5 minutes
         if ((time.time() - cayenne_timestamp) > 300):
           print("Publish to cayenne")
@@ -227,13 +219,6 @@ Click http://10.0.0.8:8080/view?scale=day for more information.
         time.sleep(0.1)
 
 current = {}
-
-paho = mqtt.Client('fridge')
-#paho.on_message = on_message_wxt
-paho.username_pw_set(PAHO_USERNAME,PAHO_PASSWORD)
-paho.connect(LOCAL_BROKER_ADDRESS)
-paho.loop_start()
-#paho.subscribe('wxt/{}/cmd'.format(WXT_SERIAL))  # subscribe to command channel
 
 client = cayenne.client.CayenneMQTTClient()
 client.on_message = on_message
