@@ -228,7 +228,7 @@ Click http://10.0.0.8:8080/view?scale=day for more information.
 
 current = {}
 
-paho = mqtt.Client('fridge')
+paho = mqtt.Client('fridge-producer')
 #paho.on_message = on_message_wxt
 paho.username_pw_set(PAHO_USERNAME,PAHO_PASSWORD)
 paho.connect(LOCAL_BROKER_ADDRESS)
