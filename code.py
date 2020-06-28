@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # this is the code that goes in the http directory
 
 import os
@@ -17,6 +17,7 @@ RESOLUTIONS = {'hour': '-1hours', 'qtrday': '-6hours', 'semiday': '-13hours', 'd
 
 class Page:
     def GET(self):
+        print("hello")
         scale = web.input(scale='hour').scale.lower()
         if scale not in SCALES:
             scale = SCALES[0]
@@ -34,10 +35,11 @@ class Page:
  
 class Graph:
   def GET(self):
+      print("got here")
       scale = web.input(scale='day').scale.lower()
       if scale not in SCALES:
           scale = SCALES[0]
-      fd,path = tempfile.mkstemp('.png')
+      (fd,path) = tempfile.mkstemp('.png')
       rrdtool.graph(path,
                     '-w 900',  '-h',  '400', '-a', 'PNG',
                     '--start',  ',%s' % (RESOLUTIONS[scale], ),
@@ -71,7 +73,7 @@ class Graph:
                     'GPRINT:fridge:MAX:Max\:%8.2lf',
                     r'GPRINT:fridge:MIN:Min\:%8.2lf\j',
                     'LINE2:light_offset#000000:light on/off ')
-      data = open(path, 'r').read()
+      data = open(path, 'rb').read()
       os.unlink(path)
       web.header('Content-Type', 'image/png')
       return data
