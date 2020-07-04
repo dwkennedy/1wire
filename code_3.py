@@ -18,7 +18,6 @@ RESOLUTIONS = {'hour': '-1hours', 'qtrday': '-6hours', 'semiday': '-13hours', 'd
 
 class Page:
     def GET(self):
-        print("hello")
         scale = web.input(scale='hour').scale.lower()
         if scale not in SCALES:
             scale = SCALES[0]
@@ -36,7 +35,6 @@ class Page:
  
 class Graph:
   def GET(self):
-      print("got here")
       scale = web.input(scale='day').scale.lower()
       if scale not in SCALES:
           scale = SCALES[0]
