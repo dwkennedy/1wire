@@ -38,7 +38,7 @@ def on_message(client, userdata, message):
       print("update rrdtool failure: {}".format(e))
 
 def main():    
-    paho = mqtt.Client('fridge-consumer-%s',(os.getpid()))
+    paho = mqtt.Client('fridge-consumer-{}'.format(os.getpid()))
     paho.on_message = on_message
     paho.on_connect = on_connect
     paho.username_pw_set(PAHO_USERNAME,PAHO_PASSWORD)
