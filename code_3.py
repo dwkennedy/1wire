@@ -72,8 +72,10 @@ class Graph:
                     'GPRINT:fridge:MAX:Max\:%8.2lf',
                     r'GPRINT:fridge:MIN:Min\:%8.2lf\j',
                     'LINE2:light_offset#000000:light on/off ')
-      data = open(path, 'rb').read()
-      fd.close()
+      file = open(path, 'rb')
+      data = file.read()
+      file.close()
+      os.close(fd)
       os.unlink(path)
       web.header('Content-Type', 'image/png')
       return data
