@@ -4,6 +4,7 @@ import time
 import sys, os
 import rrdtool
 import paho.mqtt.client as mqtt
+import ssl
 import json
 from secret import * 
 
@@ -42,7 +43,8 @@ def main():
     paho.on_message = on_message
     paho.on_connect = on_connect
     paho.username_pw_set(PAHO_USERNAME,PAHO_PASSWORD)
-    paho.connect(LOCAL_BROKER_ADDRESS)
+    paho.tls_set(ca_certs='/etc/mosquitto/certs/server.crt',cert_reqs=ssl.CERT_NONE)
+    paho.connect(LOCAL_BROKER_ADDRESS, port=LOCAL_BROKER_PORT)
     paho.subscribe('fridge')  # subscribe to fridge status
 
 
