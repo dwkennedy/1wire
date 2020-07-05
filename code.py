@@ -7,13 +7,21 @@ import tempfile
 import web
 
 # web.py app URL routing setup
-URLS = ('/graph.png', 'Graph',
-        '/view', 'Page')
+URLS = ('/graph.png', 'Graph', '/view', 'Page', '/favicon.ico', 'Icon')
 
 RRD_FILE = '/var/1w_files/templog.rrd'
 SCALES = ('hour', 'qtrday', 'semiday', 'day', 'week', 'month', 'quarter', 'half', 'year')
 RESOLUTIONS = {'hour': '-1hours', 'qtrday': '-6hours', 'semiday': '-13hours', 'day': '-26hours', 'week':'-8d', 'month':'-35d', 'quarter':'-90d',
   'half':'-6months', 'year':'-1y'}
+
+class Icon:
+    def GET(self):
+        web.header('Content-Type', 'image/x-icon')
+        file = open('favicon.ico','rb')
+        data = file.read()
+        file.close()
+        return(data)
+
 
 class Page:
     def GET(self):
