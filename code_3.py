@@ -8,7 +8,7 @@ import tempfile
 import web
 
 # web.py app URL routing setup
-URLS = ('/graph.png', 'Graph', '/view', 'Page', '/favicon.ico','Icon')
+URLS = ('/graph.png', 'Graph', '/view', 'Page', '/favicon.ico','Icon','/', 'Root')
 
 RRD_FILE = '/var/1w_files/templog.rrd'
 SCALES = ('hour', 'qtrday', 'semiday', 'day', 'week', 'month', 'quarter', 'half', 'year')
@@ -22,7 +22,11 @@ class Icon:
         data = file.read()
         file.close()
         return(data)
-        
+      
+class Root:
+    def GET(self):
+        return(Page.GET(self))
+
 class Page:
     def GET(self):
         scale = web.input(scale='hour').scale.lower()
